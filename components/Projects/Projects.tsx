@@ -24,106 +24,101 @@ export default function Projects() {
   const { ref, inView } = useInView({ threshold: 0.08, triggerOnce: true });
 
   return (
-    <section id="projects" ref={ref} className="section-padding w-full" style={{ backgroundColor: "#0c0c0e" }}>
+    <section id="projects" ref={ref} className="section-min-h w-full" style={{ backgroundColor: "var(--bg-primary)" }}>
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-10 flex items-end justify-between gap-4"
+          className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6"
         >
-          <div className="space-y-3">
+          <div className="space-y-4">
             <p className="type-accent-label" style={{ color: "#6366f1" }}>WHAT I&apos;VE BUILT</p>
             <h2 className="type-display-section">Featured <span className="accent-italic">Projects</span></h2>
           </div>
-          <FaGithub size={28} className="hidden sm:block" style={{ color: "#55556a" }} />
+          <motion.a 
+            href="https://github.com/EricPraveen" 
+            target="_blank" rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold tracking-wide shadow-lg"
+            style={{ background: "#141417", color: "#f0f0f5", border: "1px solid rgba(255,255,255,0.08)" }}
+          >
+            <FaGithub size={18} /> View GitHub Profile
+          </motion.a>
         </motion.div>
 
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-8 lg:grid-cols-2">
           {projects.map((project, i) => (
             <motion.article
               key={project.id}
-              initial={{ opacity: 0, y: 32 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.55, delay: 0.1 + i * 0.1 }}
-              className="group overflow-hidden rounded-xl shadow-sm"
-              style={{
-                background: "#141417",
-                border: "1px solid rgba(255,255,255,0.08)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.45)";
-                e.currentTarget.style.borderColor = "rgba(99,102,241,0.35)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-              }}
+              transition={{ duration: 0.7, delay: 0.1 + i * 0.15 }}
+              className="card group flex flex-col"
             >
-              {/* Top bar */}
-              <div className="h-1 w-full" style={{
-                background: i % 2 === 0
-                  ? "linear-gradient(90deg, #6366f1, #818cf8)"
-                  : "linear-gradient(90deg, #818cf8, #22c55e)",
-              }} />
-
-              {/* Image area */}
-              <div
-                className="relative flex aspect-[16/9] items-center justify-center overflow-hidden"
-                style={{ background: gradients[i % gradients.length] }}
-              >
-                <div
-                  className="absolute left-4 top-4 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-widest backdrop-blur"
-                  style={{
-                    background: "rgba(12,12,14,0.75)",
-                    borderColor: "rgba(255,255,255,0.1)",
-                    color: project.status.toLowerCase() === "completed" ? "#34d399" : "#fbbf24",
-                  }}
+              {/* Image Banner */}
+              <div className="relative w-full h-48 sm:h-56 overflow-hidden bg-[#141417]">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#141417] via-transparent to-transparent z-10 opacity-60" />
+                
+                {/* Project Image Placeholder */}
+                <div 
+                  className="w-full h-full transition-transform duration-700 group-hover:scale-110 flex items-center justify-center relative overflow-hidden"
+                  style={{ background: `linear-gradient(135deg, rgba(99,102,241,0.1), rgba(12,12,14,1))` }}
                 >
-                  {project.status.toLowerCase() === "completed" ? "Completed" : "In Progress"}
+                  <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)", backgroundSize: "24px 24px" }}></div>
+                  <span className="text-6xl font-extrabold opacity-20" style={{ color: "#f0f0f5", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    {project.title.substring(0, 2).toUpperCase()}
+                  </span>
                 </div>
-                <span className="select-none text-7xl font-extrabold opacity-10" style={{ color: "#f0f0f5", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  0{project.id}
-                </span>
+
+                {/* Badges */}
+                <div className="absolute top-4 left-4 z-20 flex gap-2">
+                  <div
+                    className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md"
+                    style={{ background: "rgba(0,0,0,0.6)", color: project.status.toLowerCase() === "completed" ? "#34d399" : "#fbbf24", border: "1px solid rgba(255,255,255,0.1)" }}
+                  >
+                    {project.status.toLowerCase() === "completed" ? "Completed" : "In Progress"}
+                  </div>
+                </div>
               </div>
 
-              {/* Card body */}
-              <div className="space-y-4 p-5">
-                <h3 className="text-xl font-bold leading-tight tracking-tight" style={{ color: "#f0f0f5", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              {/* Content Body */}
+              <div className="p-6 sm:p-8 flex flex-col flex-grow">
+                <h3 className="text-xl sm:text-2xl font-extrabold mb-2" style={{ color: "#f0f0f5", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   {project.title}
                 </h3>
-                <p className="line-clamp-2 text-sm leading-6" style={{ color: "#9898a8" }}>
+                <p className="text-sm sm:text-base leading-relaxed mb-4 flex-grow" style={{ color: "#9898a8" }}>
                   {project.description}
                 </p>
-                <div className="flex flex-wrap gap-2">
+                
+                {/* Tech Stack */}
+                <div className="flex flex-wrap gap-2 mb-6">
                   {project.tech.map((tech) => (
-                    <span key={tech} className="rounded-md px-2.5 py-0.5 text-xs font-semibold"
+                    <span key={tech} className="px-2 py-1 rounded-md text-[11px] font-bold shadow-sm"
                       style={{
                         background: `${techColors[tech] || "#ffffff"}15`,
-                        color: techColors[tech] || "#9898a8",
-                        border: `1px solid ${techColors[tech] || "#ffffff"}25`,
+                        color: techColors[tech] || "#f0f0f5",
+                        border: `1px solid ${techColors[tech] || "#ffffff"}30`,
                       }}
                     >{tech}</span>
                   ))}
                 </div>
-                <div className="flex gap-3 pt-1">
-                  <a href={project.github} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-                    style={{ color: "#55556a" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#f0f0f5")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "#55556a")}
-                  >
-                    <FaGithub size={13} /> Code
-                  </a>
+
+                {/* Actions */}
+                <div className="flex items-center gap-4 pt-4 mt-auto" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                  {project.github && (
+                    <a href={project.github} target="_blank" rel="noopener noreferrer"
+                      className="btn-outline flex-1 py-3 px-4 flex items-center justify-center gap-2 text-sm"
+                    >
+                      <FaGithub size={16} /> Code
+                    </a>
+                  )}
                   {project.live && (
                     <a href={project.live} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-sm font-medium"
-                      style={{ color: "#6366f1" }}
+                      className="btn-primary flex-1 py-3 px-4 flex items-center justify-center gap-2 text-sm shadow-lg"
                     >
-                      <FaExternalLinkAlt size={11} /> Live Demo
+                      <FaExternalLinkAlt size={14} /> Live Demo
                     </a>
                   )}
                 </div>
@@ -131,26 +126,6 @@ export default function Projects() {
             </motion.article>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-9 text-center"
-        >
-          <a
-            href="https://github.com/EricPraveen"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 text-sm font-semibold tracking-wide transition-colors"
-            style={{ color: "#f0f0f5" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#6366f1")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#f0f0f5")}
-          >
-            View All Projects on GitHub
-            <FaArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-1" />
-          </a>
-        </motion.div>
       </div>
     </section>
   );

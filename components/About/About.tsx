@@ -23,8 +23,8 @@ export default function About() {
   return (
     <div className="w-full">
       {/* 1. HERO SECTION */}
-      <section ref={heroRef} className="container-custom flex min-h-[calc(100vh-6rem)] items-center justify-center py-12 md:py-0">
-        <div className="grid w-full gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center xl:gap-20">
+      <section ref={heroRef} className="section-min-h container-custom flex items-center justify-center">
+        <div className="grid w-full gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center xl:gap-16">
           
           {/* Left Text */}
           <motion.div
@@ -74,8 +74,8 @@ export default function About() {
       </section>
 
       {/* 2. QUOTE & BIO SECTION */}
-      <section ref={quoteRef} className="container-custom py-20" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <div className="grid gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-24">
+      <section ref={quoteRef} className="container-custom py-16" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           {/* Large Quote */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
@@ -118,29 +118,33 @@ export default function About() {
       </section>
 
       {/* 3. VALUES SECTION */}
-      <section ref={valuesRef} className="container-custom py-20" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={valuesInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="mb-12 space-y-3">
+      <section ref={valuesRef} id="about-values" className="container-custom py-16" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={valuesInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="mb-10 space-y-3 text-center">
           <p className="type-accent-label" style={{ color: "#6366f1" }}>WHAT I STAND FOR</p>
-          <h2 className="type-display-section">Values that guide my work</h2>
+          <h2 className="type-display-section">Values that guide my <span className="accent-italic">work</span></h2>
         </motion.div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((val, i) => {
             const Icon = iconMap[val.icon] || FaCompass;
             return (
               <motion.div
                 key={val.title}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={valuesInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
-                className="rounded-2xl p-6 shadow-sm flex flex-col gap-4"
-                style={{ background: "#141417", border: "1px solid rgba(255,255,255,0.05)" }}
+                transition={{ duration: 0.6, delay: 0.1 + i * 0.1 }}
+                className="card p-6 flex flex-col gap-4 items-center text-center relative group"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: "rgba(99,102,241,0.1)", color: "#6366f1", border: "1px solid rgba(99,102,241,0.2)" }}>
-                  <Icon size={16} />
+                {/* Subtle background glow on hover */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#6366f1]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3" style={{ background: "rgba(99,102,241,0.1)", color: "#6366f1", border: "1px solid rgba(99,102,241,0.2)", boxShadow: "0 8px 32px rgba(99,102,241,0.2)" }}>
+                  <Icon size={24} />
                 </div>
-                <h3 className="text-lg font-bold" style={{ color: "#f0f0f5" }}>{val.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: "#9898a8" }}>{val.description}</p>
+                <div className="relative z-10">
+                  <h3 className="text-xl font-bold mb-3" style={{ color: "#f0f0f5" }}>{val.title}</h3>
+                  <p className="text-sm sm:text-base leading-relaxed" style={{ color: "#9898a8" }}>{val.description}</p>
+                </div>
               </motion.div>
             );
           })}
@@ -148,43 +152,45 @@ export default function About() {
       </section>
 
       {/* 4. TIMELINE SECTION */}
-      <section ref={journeyRef} className="container-custom py-20" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={journeyInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="mb-16 space-y-3">
+      <section ref={journeyRef} className="container-custom py-16" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={journeyInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="mb-12 space-y-3 text-center">
           <p className="type-accent-label" style={{ color: "#6366f1" }}>THE JOURNEY</p>
-          <h2 className="type-display-section">Life timeline</h2>
+          <h2 className="type-display-section">Life <span className="accent-italic">timeline</span></h2>
         </motion.div>
 
-        <div className="relative max-w-5xl mx-auto">
+        <div className="relative max-w-6xl mx-auto">
           {/* Center Line (hidden on very small screens, shown as left line on small, center on md+) */}
-          <div className="absolute left-[24px] md:left-1/2 top-0 bottom-0 w-px -translate-x-1/2" style={{ background: "linear-gradient(to bottom, rgba(99,102,241,0.25), rgba(99,102,241,0.05))" }} />
+          <div className="absolute left-[24px] md:left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 rounded-full" style={{ background: "linear-gradient(to bottom, #6366f1 0%, rgba(99,102,241,0.1) 100%)" }} />
 
-          <div className="space-y-24 md:space-y-32">
+          <div className="space-y-12 md:space-y-16">
             {journeyTimeline.map((item, i) => {
               const isEven = i % 2 === 0;
               return (
                 <motion.div
                   key={item.year}
-                  initial={{ opacity: 0, y: 24 }}
+                  initial={{ opacity: 0, y: 40 }}
                   animate={journeyInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  transition={{ duration: 0.7, delay: i * 0.15 }}
                   className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-0"
                 >
                   {/* Dot aligned to the top edge of the card */}
-                  <div className="absolute left-[24px] md:left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-10 h-3 w-3 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" />
+                  <div className="absolute left-[24px] md:left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
+                    <div className="h-6 w-6 rounded-full bg-[#141417] border-4 border-[#6366f1] shadow-[0_0_20px_rgba(99,102,241,0.6)]" />
+                  </div>
 
                   {/* Content Card */}
                   {isEven ? (
                     <>
                       {/* Left Side Card */}
-                      <div className="w-full pl-16 md:pl-0 flex justify-start md:justify-end">
-                        <div className="rounded-2xl p-6 sm:p-8 w-full max-w-lg text-left md:mr-12 lg:mr-16" style={{ background: "#141417", border: "1px solid rgba(255,255,255,0.05)" }}>
-                          <span className="inline-block rounded-full px-3 py-1 text-xs font-semibold mb-4" style={{ background: "rgba(255,255,255,0.03)", color: "#9898a8", border: "1px solid rgba(255,255,255,0.08)" }}>
+                      <div className="w-full pl-12 md:pl-0 flex justify-start md:justify-end">
+                        <div className="card p-6 sm:p-8 w-full max-w-xl text-left md:mr-12 relative">
+                          <span className="inline-block rounded-full px-3 py-1 text-sm font-bold mb-3 shadow-sm" style={{ background: "rgba(99,102,241,0.15)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.3)" }}>
                             {item.year}
                           </span>
-                          <h3 className="text-xl sm:text-2xl font-bold mb-3" style={{ color: "#f0f0f5", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                          <h3 className="text-xl sm:text-2xl font-extrabold mb-3 tracking-tight" style={{ color: "#f0f0f5", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                             {item.title}
                           </h3>
-                          <p className="text-sm sm:text-base leading-relaxed" style={{ color: "#9898a8" }}>
+                          <p className="text-base sm:text-lg leading-relaxed" style={{ color: "#9898a8" }}>
                             {item.description}
                           </p>
                         </div>
@@ -197,15 +203,15 @@ export default function About() {
                       {/* Empty left column */}
                       <div className="hidden md:block" />
                       {/* Right Side Card */}
-                      <div className="w-full pl-16 md:pl-0 flex justify-start">
-                        <div className="rounded-2xl p-6 sm:p-8 w-full max-w-lg text-left md:ml-12 lg:ml-16" style={{ background: "#141417", border: "1px solid rgba(255,255,255,0.05)" }}>
-                          <span className="inline-block rounded-full px-3 py-1 text-xs font-semibold mb-4" style={{ background: "rgba(255,255,255,0.03)", color: "#9898a8", border: "1px solid rgba(255,255,255,0.08)" }}>
+                      <div className="w-full pl-12 md:pl-0 flex justify-start">
+                        <div className="card p-6 sm:p-8 w-full max-w-xl text-left md:ml-12 relative">
+                          <span className="inline-block rounded-full px-3 py-1 text-sm font-bold mb-3 shadow-sm" style={{ background: "rgba(99,102,241,0.15)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.3)" }}>
                             {item.year}
                           </span>
-                          <h3 className="text-xl sm:text-2xl font-bold mb-3" style={{ color: "#f0f0f5", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                          <h3 className="text-xl sm:text-2xl font-extrabold mb-3 tracking-tight" style={{ color: "#f0f0f5", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                             {item.title}
                           </h3>
-                          <p className="text-sm sm:text-base leading-relaxed" style={{ color: "#9898a8" }}>
+                          <p className="text-base sm:text-lg leading-relaxed" style={{ color: "#9898a8" }}>
                             {item.description}
                           </p>
                         </div>

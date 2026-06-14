@@ -1,5 +1,1 @@
-import Education from "@/components/Education/Education";
-
-export default function EducationPage() {
-  return <Education />;
-}
+import Education from "@/components/Education/Education"; export default function Page() { return <Education />; }
