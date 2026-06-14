@@ -2,252 +2,186 @@
 
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import { FaGithub, FaLinkedin, FaDownload, FaArrowDown } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaDownload } from "react-icons/fa";
 import { personalInfo } from "@/data";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter();
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ backgroundColor: "#020209" }}
+      className="relative isolate flex min-h-[calc(100vh-8rem)] items-center overflow-hidden"
+      style={{ backgroundColor: "#0c0c0e" }}
     >
-      {/* Animated background blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Radial gradient background */}
+      <div aria-hidden="true" className="absolute inset-0 -z-20 pointer-events-none">
         <div
-          className="absolute rounded-full opacity-20 animate-blob"
+          className="absolute inset-0"
           style={{
-            width: "500px",
-            height: "500px",
-            top: "-100px",
-            left: "-100px",
-            background: "radial-gradient(circle, #a855f7, transparent)",
-            filter: "blur(80px)",
+            background: "radial-gradient(70% 80% at 30% 50%, rgba(99,102,241,0.12) 0%, transparent 68%)",
           }}
         />
         <div
-          className="absolute rounded-full opacity-20 animate-blob"
+          className="absolute"
           style={{
-            width: "400px",
-            height: "400px",
-            bottom: "-50px",
-            right: "-50px",
-            background: "radial-gradient(circle, #00d4ff, transparent)",
-            filter: "blur(80px)",
-            animationDelay: "3s",
-          }}
-        />
-        <div
-          className="absolute rounded-full opacity-10 animate-blob"
-          style={{
-            width: "300px",
-            height: "300px",
-            top: "50%",
-            left: "50%",
-            background: "radial-gradient(circle, #22d3ee, transparent)",
-            filter: "blur(60px)",
-            animationDelay: "5s",
+            bottom: 0, right: "10%", width: "400px", height: "300px",
+            background: "radial-gradient(ellipse, rgba(34,197,94,0.06), transparent 70%)",
+            filter: "blur(40px)",
           }}
         />
       </div>
 
-      {/* Grid pattern overlay */}
+      {/* Grain texture */}
+      <div aria-hidden="true" className="hero-grain pointer-events-none absolute inset-0 -z-10" />
+
+      {/* Grid lines overlay */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
         style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-          backgroundSize: "50px 50px",
+          opacity: 0.025,
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)`,
+          backgroundSize: "64px 64px",
         }}
       />
 
       {/* Main content */}
-      <div className="container-custom relative z-10 text-center">
-        {/* Greeting badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm mb-8"
-          style={{
-            background: "rgba(168, 85, 247, 0.1)",
-            border: "1px solid rgba(168, 85, 247, 0.3)",
-            color: "#a855f7",
-          }}
-        >
-          <span
-            className="w-2 h-2 rounded-full animate-pulse"
-            style={{ background: "#a855f7" }}
-          />
-          Available for freelance work
-        </motion.div>
+      <div className="container-custom w-full">
+        <div className="grid w-full gap-12 py-32 lg:grid-cols-[1.5fr_1fr] lg:items-center lg:py-0">
 
-        {/* Name */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 tracking-tight"
-        >
-          <span style={{ color: "rgba(255,255,255,0.95)" }}>Hi, I'm </span>
-          <span
-            style={{
-              background: "linear-gradient(135deg, #00d4ff, #a855f7, #22d3ee)",
-              backgroundSize: "300%",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            {personalInfo.name}
-          </span>
-        </motion.h1>
-
-        {/* Typing animation */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-xl md:text-3xl font-medium mb-6 h-12 flex items-center justify-center"
-          style={{ color: "rgba(255,255,255,0.7)" }}
-        >
-          <span style={{ color: "rgba(255,255,255,0.4)" }} className="mr-2">
-            I build
-          </span>
-          <TypeAnimation
-            sequence={[
-              "Full Stack Web Apps",
-              2000,
-              "React Interfaces",
-              2000,
-              "REST APIs",
-              2000,
-              "Spring Boot Services",
-              2000,
-              "IoT Systems",
-              2000,
-            ]}
-            wrapper="span"
-            speed={50}
-            repeat={Infinity}
-            style={{ color: "#00d4ff" }}
-          />
-        </motion.div>
-
-        {/* Bio */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
-          style={{ color: "rgba(255,255,255,0.5)" }}
-        >
-          {personalInfo.bio}
-        </motion.p>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap items-center justify-center gap-4 mb-12"
-        >
-          {/* Primary button */}
-          <motion.button
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() =>
-              document
-                .querySelector("#projects")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-            className="px-8 py-3 rounded-full font-semibold text-sm"
-            style={{
-              background: "linear-gradient(135deg, #00d4ff, #a855f7)",
-              color: "white",
-              boxShadow: "0 0 30px rgba(168,85,247,0.3)",
-            }}
-          >
-            View My Work
-          </motion.button>
-
-          {/* Secondary button */}
-          <motion.a
-            href="/resume.pdf"
-            download
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 rounded-full font-semibold text-sm flex items-center gap-2"
-            style={{
-              border: "1px solid rgba(0, 212, 255, 0.4)",
-              color: "#00d4ff",
-            }}
-          >
-            <FaDownload size={14} />
-            Download CV
-          </motion.a>
-        </motion.div>
-
-        {/* Social links */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex items-center justify-center gap-4 mb-16"
-        >
-          {[
-            { icon: FaGithub, href: personalInfo.github, label: "GitHub" },
-            {
-              icon: FaLinkedin,
-              href: personalInfo.linkedin,
-              label: "LinkedIn",
-            },
-          ].map(({ icon: Icon, href, label }) => (
-            <motion.a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.15, y: -3 }}
-              whileTap={{ scale: 0.9 }}
-              className="p-3 rounded-full transition-all duration-300"
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "rgba(255,255,255,0.6)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#00d4ff";
-                e.currentTarget.style.color = "#00d4ff";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor =
-                  "rgba(255,255,255,0.1)";
-                e.currentTarget.style.color = "rgba(255,255,255,0.6)";
-              }}
-              aria-label={label}
-            >
-              <Icon size={20} />
-            </motion.a>
-          ))}
-        </motion.div>
-
-        {/* Scroll down indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="flex flex-col items-center gap-2"
-          style={{ color: "rgba(255,255,255,0.3)" }}
-        >
-          <span className="text-xs tracking-widest uppercase">Scroll</span>
+          {/* Left — Text */}
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-3xl space-y-8"
           >
-            <FaArrowDown size={14} />
+            {/* Accent label */}
+            <p className="type-accent-label" style={{ color: "#55556a" }}>
+              Portfolio / Intro
+            </p>
+
+            {/* Typing animation */}
+            <div style={{ minHeight: "1.8rem" }}>
+              <p className="text-lg font-medium tracking-tight sm:text-xl" style={{ color: "#6366f1" }}>
+                <TypeAnimation
+                  sequence={[
+                    "Full Stack Developer",
+                    2000,
+                    "React Specialist",
+                    2000,
+                    "Spring Boot Engineer",
+                    2000,
+                    "Open Source Builder",
+                    2000,
+                  ]}
+                  wrapper="span"
+                  speed={50}
+                  repeat={Infinity}
+                />
+                <span aria-hidden="true" className="ml-1 inline-block align-baseline" style={{ opacity: 0.5 }}>|</span>
+              </p>
+            </div>
+
+            {/* Main heading */}
+            <h1 className="type-display">
+              <span className="font-extrabold" style={{ color: "#f0f0f5" }}>
+                Hi, I&apos;m {personalInfo.name}.
+              </span>
+              <br />
+              <span style={{ color: "#f0f0f5", fontWeight: 500 }}>I build things </span>
+              <span className="accent-italic">that matter.</span>
+            </h1>
+
+            {/* Bio */}
+            <p className="max-w-xl text-lg leading-8 sm:text-xl" style={{ color: "#9898a8" }}>
+              {personalInfo.bio}
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap items-center gap-4">
+              <motion.button
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => router.push("/projects")}
+                className="btn-primary h-12 px-6 text-base"
+              >
+                View My Work
+              </motion.button>
+              <motion.a
+                href="/resume.pdf"
+                download
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="btn-outline h-12 px-6 text-base"
+              >
+                <FaDownload size={14} />
+                Download CV
+              </motion.a>
+            </div>
+
+            {/* Social links */}
+            <div className="flex items-center gap-3 pt-1">
+              {[
+                { icon: FaGithub, href: personalInfo.github, label: "GitHub" },
+                { icon: FaLinkedin, href: personalInfo.linkedin, label: "LinkedIn" },
+              ].map(({ icon: Icon, href, label }) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="btn-icon h-11 w-11"
+                >
+                  <Icon size={20} />
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
-        </motion.div>
+
+          {/* Right — Code card */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:block"
+          >
+            <div className="code-card ml-auto max-w-sm">
+              <p>
+                <span style={{ color: "#6366f1" }}>const</span>{" "}
+                <span style={{ color: "#f0f0f5" }}>developer</span>{" "}
+                <span style={{ color: "#55556a" }}>=</span>{" "}
+                <span style={{ color: "#22d3ee" }}>&quot;{personalInfo.name}&quot;</span>;
+              </p>
+              <p>
+                <span style={{ color: "#6366f1" }}>const</span>{" "}
+                <span style={{ color: "#f0f0f5" }}>focus</span>{" "}
+                <span style={{ color: "#55556a" }}>=</span> [
+                <span style={{ color: "#22d3ee" }}>&quot;performance&quot;</span>,{" "}
+                <span style={{ color: "#22d3ee" }}>&quot;design&quot;</span>];
+              </p>
+              <br />
+              <p>
+                <span style={{ color: "#6366f1" }}>export default function</span>{" "}
+                <span style={{ color: "#fbbf24" }}>craft</span>() {"{"}
+              </p>
+              <p className="pl-5">
+                <span style={{ color: "#6366f1" }}>return</span>{" "}
+                <span style={{ color: "#22d3ee" }}>&quot;work that matters&quot;</span>;
+              </p>
+              <p>{"}"}</p>
+              <br />
+              <p><span style={{ color: "#55556a" }}>{"// Stack: React · Spring Boot · PostgreSQL"}</span></p>
+              <p><span style={{ color: "#55556a" }}>{"// GPA: "}{personalInfo.gpa}{" / 4.0 @ "}{personalInfo.university}</span></p>
+            </div>
+          </motion.div>
+        </div>
       </div>
+
     </section>
   );
 }

@@ -1,40 +1,35 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+import Navbar from "@/components/Navbar/Navbar";
+import Footer from "@/components/Footer/Footer";
+import CursorGlow from "@/components/UI/CursorGlow";
+import LoadingScreen from "@/components/UI/LoadingScreen";
+
 export const metadata: Metadata = {
-  title: "EricPraveen | Full Stack Developer",
-  description: "Portfolio of Alric Prashanth — Full Stack Developer from Sri Lanka. B.Sc. IT at University of Moratuwa. React, Node.js, Spring Boot specialist.",
-  keywords: ["EricPraveen", "Alric Prashanth", "Full Stack Developer", "Sri Lanka", "React", "Node.js", "Portfolio"],
-  authors: [{ name: "Alric Prashanth" }],
-  creator: "Alric Prashanth",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://ericpraveen.vercel.app",
-    title: "EricPraveen | Full Stack Developer",
-    description: "Full Stack Developer from Sri Lanka. React, Node.js, Spring Boot.",
-    siteName: "EricPraveen Portfolio",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "EricPraveen | Full Stack Developer",
-    description: "Full Stack Developer from Sri Lanka.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  title: "EricPraveen — Full Stack Developer",
+  description: "Portfolio of Eric Praveen, a Full Stack Developer building modern web experiences.",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-dark-900 text-slate-200 antialiased">
-        {children}
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
+      <body className="min-h-screen antialiased flex flex-col" style={{ backgroundColor: "#0c0c0e", color: "#f0f0f5" }}>
+        <LoadingScreen />
+        <CursorGlow />
+        <Navbar />
+        <main className="flex-grow pt-24 pb-12">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

@@ -1,169 +1,167 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { navLinks } from "@/data";
+import { navLinks, personalInfo } from "@/data";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    navLinks.forEach(({ href }) => {
-      const id = href.replace("#", "");
-      const el = document.getElementById(id);
-      if (!el) return;
-      const observer = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
-        { threshold: 0.4 }
-      );
-      observer.observe(el);
-      observers.push(observer);
-    });
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
-  const handleNavClick = (href: string) => {
-    setMenuOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <>
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
+      <motion.header
+        initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 right-0 z-[999] transition-all duration-300"
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed inset-x-0 top-0 z-50 transition-all duration-300"
         style={{
-          background: scrolled ? "rgba(2, 2, 9, 0.85)" : "transparent",
+          background: scrolled ? "rgba(12,12,14,0.9)" : "transparent",
           backdropFilter: scrolled ? "blur(20px)" : "none",
-          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
+          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
         }}
       >
-        <div className="container-custom flex items-center justify-between h-20">
-          <motion.button
-            onClick={() => handleNavClick("#home")}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="text-xl font-bold"
-            style={{
-              background: "linear-gradient(135deg, #00d4ff, #a855f7)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            EricPraveen
-          </motion.button>
+        <div className="container-custom flex h-20 items-center justify-between">
 
-          <div className="hidden md:flex items-center gap-1">
+          {/* Logo */}
+          <Link
+            href="/"
+            onClick={() => setMenuOpen(false)}
+            className="flex items-center gap-3 transition-opacity hover:opacity-75"
+            aria-label="Go to home"
+          >
+            <div
+              className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold"
+              style={{
+                background: "linear-gradient(135deg, #6366f1, #818cf8)",
+                color: "white",
+                boxShadow: "0 0 16px rgba(99,102,241,0.3)",
+              }}
+            >
+              E
+            </div>
+            <span className="hidden text-sm font-semibold tracking-tight sm:block" style={{ color: "#f0f0f5" }}>
+              {personalInfo.name}
+            </span>
+          </Link>
+
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-7 lg:flex">
             {navLinks.map(({ name, href }) => {
-              const id = href.replace("#", "");
-              const isActive = activeSection === id;
+              const isActive = pathname === href || (pathname === "/" && href === "/");
               return (
-                <motion.button
+                <Link
                   key={name}
-                  onClick={() => handleNavClick(href)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="relative px-4 py-2 text-sm font-medium transition-colors duration-200"
-                  style={{ color: isActive ? "#00d4ff" : "rgba(255,255,255,0.65)" }}
+                  href={href}
+                  className={`nav-underline relative py-1 text-sm font-medium tracking-tight transition-colors duration-200 ${isActive ? "active" : ""}`}
+                  style={{ color: isActive ? "#f0f0f5" : "#9898a8" }}
                 >
                   {name}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeNav"
-                      className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
-                      style={{ background: "linear-gradient(90deg, #00d4ff, #a855f7)" }}
-                    />
-                  )}
-                </motion.button>
+                </Link>
               );
             })}
+          </nav>
 
+          {/* Right */}
+          <div className="flex items-center gap-2">
             <motion.a
               href="/resume.pdf"
               target="_blank"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="ml-4 px-5 py-2 text-sm font-medium rounded-full"
-              style={{ border: "1px solid #00d4ff", color: "#00d4ff" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#00d4ff";
-                e.currentTarget.style.color = "#020209";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.color = "#00d4ff";
-              }}
+              rel="noopener noreferrer"
+              whileHover={{ y: -2 }}
+              className="btn-primary hidden sm:inline-flex"
+              style={{ height: "2.25rem", padding: "0 1rem", fontSize: "0.825rem" }}
             >
               Resume
             </motion.a>
+
+            {/* Mobile hamburger */}
+            <button
+              className="btn-icon lg:hidden"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              <span className="flex flex-col gap-[5px]">
+                {[0, 1, 2].map((i) => (
+                  <motion.span
+                    key={i}
+                    className="block h-[2px] w-5 rounded-full"
+                    style={{ background: "#f0f0f5" }}
+                    animate={{
+                      rotate: menuOpen && i === 0 ? 45 : menuOpen && i === 2 ? -45 : 0,
+                      y:      menuOpen && i === 0 ? 7  : menuOpen && i === 2 ? -7  : 0,
+                      opacity: menuOpen && i === 1 ? 0 : 1,
+                    }}
+                    transition={{ duration: 0.2 }}
+                  />
+                ))}
+              </span>
+            </button>
           </div>
-
-          <motion.button
-            className="md:hidden flex flex-col gap-[5px] p-2"
-            onClick={() => setMenuOpen(!menuOpen)}
-            whileTap={{ scale: 0.9 }}
-          >
-            {[0, 1, 2].map((i) => (
-              <motion.span
-                key={i}
-                className="block h-[2px] w-6 rounded-full"
-                style={{ background: "#00d4ff" }}
-                animate={{
-                  rotate: menuOpen && i === 0 ? 45 : menuOpen && i === 2 ? -45 : 0,
-                  y: menuOpen && i === 0 ? 7 : menuOpen && i === 2 ? -7 : 0,
-                  opacity: menuOpen && i === 1 ? 0 : 1,
-                }}
-              />
-            ))}
-          </motion.button>
         </div>
-      </motion.nav>
+      </motion.header>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed top-20 left-0 right-0 z-[998] md:hidden"
-            style={{
-              background: "rgba(2, 2, 9, 0.95)",
-              backdropFilter: "blur(20px)",
-              borderBottom: "1px solid rgba(255,255,255,0.06)",
-            }}
-          >
-            <div className="container-custom py-6 flex flex-col gap-4">
-              {navLinks.map(({ name, href }) => (
-                <button
-                  key={name}
-                  onClick={() => handleNavClick(href)}
-                  className="text-left py-2 text-base font-medium"
-                  style={{ color: "rgba(255,255,255,0.7)" }}
-                >
-                  {name}
-                </button>
-              ))}
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                className="mt-2 py-2 text-center rounded-full text-sm font-medium"
-                style={{ border: "1px solid #00d4ff", color: "#00d4ff" }}
-              >
-                Resume
-              </a>
-            </div>
-          </motion.div>
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 lg:hidden"
+              style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)" }}
+              onClick={() => setMenuOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed left-4 right-4 top-24 z-50 overflow-hidden rounded-2xl lg:hidden"
+              style={{
+                background: "rgba(20,20,23,0.96)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.55)",
+              }}
+            >
+              <div className="flex flex-col gap-1 p-4">
+                {navLinks.map(({ name, href }) => {
+                  const isActive = pathname === href || (pathname === "/" && href === "/");
+                  return (
+                    <Link
+                      key={name}
+                      href={href}
+                      onClick={() => setMenuOpen(false)}
+                      className="rounded-xl px-4 py-3 text-left text-sm font-medium transition-colors"
+                      style={{
+                        color:      isActive ? "#6366f1" : "#9898a8",
+                        background: isActive ? "rgba(99,102,241,0.08)" : "transparent",
+                      }}
+                    >
+                      {name}
+                    </Link>
+                  );
+                })}
+                <div className="mt-2 pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                  <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn-primary w-full justify-center">
+                    Resume
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

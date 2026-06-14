@@ -1,30 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
 export default function ScrollProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const total =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
       const current = window.scrollY;
-      setProgress((current / total) * 100);
+      setProgress(total > 0 ? (current / total) * 100 : 0);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 right-0 z-[9997] h-[3px]"
-      style={{
-        background: "linear-gradient(90deg, #00d4ff, #a855f7, #22d3ee)",
-        transformOrigin: "left",
-        scaleX: progress / 100,
-      }}
-    />
+    <div
+      className="fixed left-0 top-0 z-[9997] h-[2px]"
+      style={{ width: "100%", background: "var(--bg-tertiary)" }}
+    >
+      <div
+        style={{
+          height: "100%",
+          width: `${progress}%`,
+          background: "var(--accent-primary)",
+          transition: "width 0.1s ease-out",
+        }}
+      />
+    </div>
   );
 }
